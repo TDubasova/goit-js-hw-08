@@ -4,13 +4,10 @@ import { galleryItems } from './gallery-items';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
-
-
 const pictureMarcup = creatingGalleryPictures(galleryItems);
 const galleryConteiner = document.querySelector(".gallery");
-galleryConteiner.insertAdjacentHTML("beforeend", pictureMarcup);
 
-// Відкриття модального вікна по кліку на елементі галереї та закриття по натисканню Escape
+galleryConteiner.insertAdjacentHTML("beforeend", pictureMarcup);
 galleryConteiner.addEventListener("click", onPictureClick);
 
 function creatingGalleryPictures(gallery) {
@@ -27,11 +24,6 @@ function creatingGalleryPictures(gallery) {
 
 function onPictureClick(evt) {
     evt.preventDefault();
-
-    const picture = evt.target.classList.contains("gallery__image");
-    if (!picture) {
-        return;
-    }
 }
 
 new SimpleLightbox('.gallery a', {
@@ -39,6 +31,8 @@ new SimpleLightbox('.gallery a', {
     captionSelector: "img",
     captionsData: "alt",
     captionDelay: 250,
+    widthRatio: 1,
+    heightRatio: 1,
 });
 
 console.log(galleryItems);
