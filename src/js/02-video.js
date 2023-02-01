@@ -6,20 +6,27 @@ const player = new Player(iframe);
 
 const LOCALSTORAGE_KEY = 'videoplayer-current-time';
 
-let data = {
-  duration: player.getDuration(),
-  persent: 0,
-  seconds: 0,
-};
-
-const videoplayerCurrentTime = function ({ seconds }) {
+const localStorageCurrentTime = function ({ seconds }) {
   localStorage.setItem(LOCALSTORAGE_KEY, seconds);
 };
 
-player.on('timeupdate', throttle(videoplayerCurrentTime, 1000));
+player.on('timeupdate', throttle(localStorageCurrentTime, 1000));
+
+let time = 0;
+
+if (LOCALSTORAGE_KEY) {
+  time = localStorage.getItem(LOCALSTORAGE_KEY);
+}
 
 player
-  .setCurrentTime(localStorage.getItem(LOCALSTORAGE_KEY))
-  .then(function (seconds) {
-    seconds = videoplayerCurrentTime;
+  .setCurrentTime(time)
+  .then(function (seconds) {})
+  .catch(function (error) {
+    switch (error.name) {
+      case 'RangeError':
+        time < 0 || time > player.getDuration();
+        break;
+      default:
+        break;
+    }
   });
